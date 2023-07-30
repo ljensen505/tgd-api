@@ -6,8 +6,11 @@ from app.routers.events.events import router as events_router
 from dotenv import load_dotenv
 from os import getenv
 
-app = FastAPI()
 load_dotenv()
+if getenv("env") == "prod":
+    app = FastAPI(docs_url=None, redoc_url=None)
+else:
+    app = FastAPI()
 
 
 @app.get("/")
