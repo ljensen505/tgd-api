@@ -7,6 +7,11 @@ class Group(BaseModel):
     bio: str
 
 
+class CarouselImage(BaseModel):
+    id: str
+    url: str
+
+
 class Musician(BaseModel):
     id: int
     name: str
