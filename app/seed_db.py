@@ -6,8 +6,8 @@ from os import getenv
 
 def populate():
     # Create a new database
-    print(getenv("DB"))
-    print(getenv("db"))
+    print(f"DB is {getenv('DB')}")
+    print(f"db is {getenv('db')}")
     conn = sqlite3.connect(getenv("db"))  # type: ignore
 
     # Drop tables if they exist
