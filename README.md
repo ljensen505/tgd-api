@@ -6,9 +6,9 @@ The Grapefruits Duo is a RESTful API built with FastAPI and SQLite, providing a 
 
 ## Installation and Setup
 
-To run the application on Mac or Linux, follow these steps:
+To run the application on Mac or Linux, follow these steps. The steps should be similar on Windows:
 
-0. Ensure SQLite3 is installed. Install if necessary
+0. Ensure SQLite3 is installed.
 
 1. Set up a virtual environment:
 
