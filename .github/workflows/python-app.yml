@@ -26,6 +26,7 @@ jobs:
     - name: Install sqlite
       run: |
         sudo apt install sqlite3
+        python app/seed_db.py
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
