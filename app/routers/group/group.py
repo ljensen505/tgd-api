@@ -1,9 +1,12 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from app.models.models import Group
 from app.models.queries import get_group, update_group_bio
+from app.auth.auth import VerifyToken
 
 
 router = APIRouter(tags=["group"])
+token_auth_scheme = HTTPBearer()
 
 
 @router.get("/", response_model=Group)
@@ -13,7 +16,17 @@ async def group() -> Group:
 
 
 @router.put("/", response_model=Group)
-async def update_bio(new_group: Group) -> Group:
+async def update_bio(
+    new_group: Group,
+    token: HTTPAuthorizationCredentials = Depends(token_auth_scheme),
+) -> Group:
+    result = VerifyToken(token.credentials).verify()
+
+    if result.get("status"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=result.get("msg")
+        )
+
     if new_group.name != "The Grapefruits Duo":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
