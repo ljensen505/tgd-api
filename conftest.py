@@ -5,8 +5,8 @@ import os
 
 @pytest.fixture(scope="session")
 def jwt_token():
-    # token = get_token()
-    token = os.environ.get("TOKEN")
+    token = get_token()
+    # token = os.environ.get("TOKEN")
     return token
 
 
