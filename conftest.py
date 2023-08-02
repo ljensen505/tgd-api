@@ -14,8 +14,8 @@ def get_token() -> str:
     url = "https://thegrapefruitsduo.us.auth0.com/oauth/token"
 
     payload = {
-        "client_id": "WQrIbh4gPU7ypcMKxxQA18eBGCOGfNxH",
-        "client_secret": "yoDuOx7My5L9A-qqS5bZIICglfzrwUn_DLkS5BjasdI0shFHP-sMKytDBcpDKRsY",
+        "client_id": os.environ.get("CLIENT_ID"),
+        "client_secret": os.environ.get("CLIENT_SECRET"),
         "audience": "https://api.thegrapefruitsduo.com",
         "grant_type": "client_credentials",
     }
