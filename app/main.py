@@ -1,22 +1,40 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.routers.group.group import router as group_router
 from app.routers.musicians.musicians import router as musicians_router
 from app.routers.users.users import router as users_router
 from app.routers.events.events import router as events_router
 from app.routers.carousel.carousel import router as carousel_router
 from dotenv import load_dotenv
-from os import getenv
+import os
+from app.auth.auth import VerifyToken
 
 load_dotenv()
-if getenv("env") == "prod":
+
+
+token_auth_scheme = HTTPBearer()
+
+if os.getenv("env") == "prod":
     app = FastAPI(docs_url=None, redoc_url=None)
 else:
     app = FastAPI()
 
 
+@app.get("/api/private")
+async def private(token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)):
+    result = VerifyToken(token.credentials).verify()
+
+    if result.get("status"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=result.get("msg")
+        )
+
+    return result
+
+
 @app.get("/")
 async def root():
-    return {"msg": "The Grapefruits Duo API", "env": getenv("env")}
+    return {"msg": "The Grapefruits Duo API", "env": os.getenv("env")}
 
 
 app.include_router(group_router, prefix="/group", tags=["group"])

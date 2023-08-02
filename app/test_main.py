@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -10,6 +11,19 @@ def test_root():
     assert isinstance(res.json(), dict)
     assert "msg" in res.json()
     assert res.json().get("msg") == "The Grapefruits Duo API"
+
+
+def test_protected(jwt_token):
+    headers = {"authorization": f"Bearer {jwt_token}"}
+    res = client.get("/api/private", headers=headers)
+    assert res.status_code == 200
+
+    headers = {"authorization": f"Bearer INVALIDJWT"}
+    res = client.get("/api/private", headers=headers)
+    assert res.status_code == 400
+
+    res = client.get("/api/private")
+    assert res.status_code == 403
 
 
 def test_nonexistant():
