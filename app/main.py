@@ -14,7 +14,7 @@ load_dotenv()
 
 token_auth_scheme = HTTPBearer()
 
-if os.getenv("env") == "prod":
+if os.getenv("ENV") == "prod":
     app = FastAPI(docs_url=None, redoc_url=None)
 else:
     app = FastAPI()
@@ -34,7 +34,7 @@ async def private(token: HTTPAuthorizationCredentials = Depends(token_auth_schem
 
 @app.get("/")
 async def root():
-    return {"msg": "The Grapefruits Duo API", "env": os.getenv("env")}
+    return {"msg": "The Grapefruits Duo API", "env": os.getenv("ENV")}
 
 
 app.include_router(group_router, prefix="/group", tags=["group"])
