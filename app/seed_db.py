@@ -1,12 +1,11 @@
 import sqlite3
 from datetime import datetime
-from dotenv import load_dotenv
-from os import getenv
+from models.db import DB
 
 
 def populate():
     # Create a new database
-    conn = sqlite3.connect(getenv("db"))  # type: ignore
+    conn = sqlite3.connect(DB)
 
     # Drop tables if they exist
     conn.execute("DROP TABLE IF EXISTS Musicians")
@@ -172,5 +171,4 @@ def populate():
 
 
 if __name__ == "__main__":
-    load_dotenv()
     populate()

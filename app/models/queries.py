@@ -1,5 +1,17 @@
 import sqlite3
-from app.models.db import db
+from app.models.db import DB
+from app.models.models import CarouselImage
+
+
+def insert_img(img: CarouselImage):
+    query = "INSERT INTO CarouselImages (id, url) VALUES (?,?)"
+    params = (img.id, img.url)
+    execute_query(query, params, is_update=True)
+
+
+def delete(table: str, id: int | str) -> None:
+    query = f"DELETE FROM {table} WHERE id=?"
+    execute_query(query, (id,), is_update=True)
 
 
 def get_all(table: str) -> list[sqlite3.Row]:
@@ -26,7 +38,7 @@ def update_group_bio(bio: str) -> None:
 def execute_query(
     query: str, params: tuple | None = None, is_update=False
 ) -> list[sqlite3.Row]:
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     if params is None:
