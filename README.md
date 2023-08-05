@@ -8,30 +8,29 @@ The Grapefruits Duo is a RESTful API built with FastAPI and SQLite, providing a 
 
 To run the application on Mac or Linux, follow these steps. The steps should be similar on Windows:
 
-0. Ensure SQLite3 is installed.
+<ol>
+  <li>Ensure SQLite3 is installed.</li>
+  <li>
+    Set up a virtual environment:
+    <pre><code>python -m venv venv</code></pre>
+  </li>
+  <li>Create a .env file:<br>
+    Create a .env file with the necessary configuration. You can use the .env.example file as a template.
+  </li>
+  <li>
+    Install dependencies:
+    <pre><code>pip install -r requirements.txt</code></pre>
+  </li>
+  <li>
+    If <code>app/tgd.db</code> does not exist, create it with:
+    <pre><code>python app/seed_db.py</code></pre>
+  </li>
+  <li>
+    Activate the virtual environment:
+    <pre><code>source venv/bin/activate</code></pre>
+  </li>
+</ol>
 
-1. Set up a virtual environment:
-
-   ```bash
-   python -m venv venv
-   ```
-
-2. Create a .env file:<br>
-Create a .env file with the necessary configuration. You can use the .env.example file as a template.
-
-3. Install dependencies:
-    ```bash
-   pip install -r requirements.txt
-   ```
-4. If app/tgd.db does not exist, create it with:
-    ```bash
-    python app/seed_db.py
-    ```
-
-5. Activate the virtual environment:
-    ```bash
-    source venv/bin/activate
-    ```
 
 ## Running the application
 
