@@ -23,8 +23,12 @@ Create a .env file with the necessary configuration. You can use the .env.exampl
     ```bash
    pip install -r requirements.txt
    ```
+4. If app/tgd.db does not exist, create it with:
+    ```bash
+    python app/seed_db.py
+    ```
 
-4. Activate the virtual environment:
+5. Activate the virtual environment:
     ```bash
     source venv/bin/activate
     ```
