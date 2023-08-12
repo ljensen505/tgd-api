@@ -20,12 +20,7 @@ async def update_bio(
     new_group: Group,
     token: HTTPAuthorizationCredentials = Depends(token_auth_scheme),
 ) -> Group:
-    result = VerifyToken(token.credentials).verify()
-
-    if result.get("status"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=result.get("msg")
-        )
+    VerifyToken(token.credentials).verify()
 
     if new_group.name != "The Grapefruits Duo":
         raise HTTPException(

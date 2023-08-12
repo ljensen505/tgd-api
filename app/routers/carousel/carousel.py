@@ -36,14 +36,10 @@ async def image(img_id: str) -> CarouselImage:
 async def del_image(
     img_id: str, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)
 ):
-    result = VerifyToken(token.credentials).verify()
-
-    if result.get("status"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=result.get("msg")
-        )
+    VerifyToken(token.credentials).verify()
 
     data = get_one(table, img_id)
+
     if data is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="image not found"
@@ -63,11 +59,7 @@ async def del_image(
 async def add_image(
     file: UploadFile, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)
 ):
-    result = VerifyToken(token.credentials).verify()
-    if result.get("status"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=result.get("msg")
-        )
+    VerifyToken(token.credentials).verify()
 
     file_obj: BinaryIO = file.file
 

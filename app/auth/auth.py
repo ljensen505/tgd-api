@@ -1,5 +1,6 @@
 import os
 import jwt
+from pprint import pprint
 
 
 def set_up():
@@ -44,5 +45,7 @@ class VerifyToken:
             )
         except Exception as e:
             return {"status": "error", "message": str(e)}
+
+        pprint(payload)
 
         return payload
