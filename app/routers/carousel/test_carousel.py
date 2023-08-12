@@ -25,6 +25,7 @@ def test_image():
         "studio_esvm3n",
     ]
     for img_id in img_ids:
+        print(img_id)
         res = client.get(f"/carousel/{img_id}")
         assert res.status_code == 200
         url = res.json().get("url")
