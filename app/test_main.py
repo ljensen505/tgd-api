@@ -20,6 +20,8 @@ def test_protected(jwt_token):
 
     headers = {"authorization": f"Bearer INVALIDJWT"}
     res = client.get("/api/private", headers=headers)
+    print(res.json())
+    print(res.status_code)
     assert res.status_code == 400
 
     res = client.get("/api/private")

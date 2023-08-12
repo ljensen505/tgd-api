@@ -59,6 +59,7 @@ def populate():
         {"name": "Margarite Waddell", "id": "google-oauth2|109109812131608294748"},
         {"name": "Coco Bender", "id": "google-oauth2|110044702811943457315"},
         {"name": "The Grapefruits", "id": "google-oauth2|116470512398914344676"},
+        {"name": "Automation Tests", "id": "WQrIbh4gPU7ypcMKxxQA18eBGCOGfNxH@clients"},
     ]
     for user in users:
         conn.execute(

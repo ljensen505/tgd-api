@@ -30,3 +30,6 @@ async def event(event_id: int) -> Event:
         image_url=data["image_url"],
         ticket_url=data["ticket_url"],
     )
+
+
+# TODO: add post and put functionality
