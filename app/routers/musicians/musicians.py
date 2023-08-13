@@ -5,6 +5,10 @@ from app.models.models import Musician
 router = APIRouter(tags=["musicians"])
 table = "Musicians"
 
+# TODO: add functionality for:
+# edit bio
+# replace headshot
+
 
 @router.get("/", response_model=dict[int, Musician])
 async def musicians() -> dict[int, Musician]:
