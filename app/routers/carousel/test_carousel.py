@@ -69,9 +69,8 @@ def test_post(jwt_token):
     assert res.status_code == 422
 
     with open("imgs/IMG_4845.jpg", "rb") as file_obj:
-        files = {"file": ("test_img.jpg", file_obj, "image/jpeg")}
         headers = {"authorization": f"Bearer {jwt_token}"}
-        res = client.post("/carousel", headers=headers, files=files)
+        res = client.post("/carousel", headers=headers, files={"file": file_obj})
 
     assert res.status_code == 201
     img_id = res.json().get("id")
@@ -87,3 +86,24 @@ def test_post(jwt_token):
 
     res = client.get("/carousel")
     assert img_id not in res.json()
+
+
+def test_invalid(jwt_token):
+    bad_imgs = ["pdf-test.pdf", "proj06-b.cpp"]
+    for img in bad_imgs:
+        with open(f"imgs/{img}", "rb") as image_file:
+            headers = {"authorization": f"Bearer {jwt_token}"}
+            response = client.post(
+                "/carousel", headers=headers, files={"file": image_file}
+            )
+        assert response.status_code == 400
+
+
+def test_jpeg(jwt_token):
+    headers = {"authorization": f"Bearer {jwt_token}"}
+    with open("imgs/carol.jpeg", "rb") as image_file:
+        response = client.post("/carousel", headers=headers, files={"file": image_file})
+    assert response.status_code == 201
+    img_id = response.json().get("id")
+
+    client.delete(f"/carousel/{img_id}", headers=headers)

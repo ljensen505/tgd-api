@@ -14,7 +14,11 @@ router = APIRouter(tags=["carousel"])
 token_auth_scheme = HTTPBearer()
 table = "CarouselImages"
 
-ALLOWED_CONTENT_TYPES = ["image/png", "image/jpeg"]
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
+
+
+def get_file_extension(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower()
 
 
 @router.get("/", response_model=dict[str, CarouselImage])
@@ -64,10 +68,12 @@ async def add_image(
     VerifyToken(token.credentials).verify()
 
     file_obj: BinaryIO = file.file
+    file_ext = get_file_extension(file.filename)
 
-    if file.content_type not in ALLOWED_CONTENT_TYPES:
+    if file_ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="must be jpg or png"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"must be jpg or png, not {file_ext}",
         )
 
     img_res: dict = cloudinary.uploader.upload(file_obj)
