@@ -2,6 +2,12 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
+class Headshot(BaseModel):
+    id: str
+    url: str
+    musician_id: int
+
+
 class Group(BaseModel):
     name: str
     bio: str
@@ -16,7 +22,7 @@ class Musician(BaseModel):
     id: int
     name: str
     bio: str
-    headshot: str
+    headshot_id: str
 
 
 class User(BaseModel):

@@ -13,6 +13,33 @@ def populate():
     conn.execute("DROP TABLE IF EXISTS Events")
     conn.execute("DROP TABLE IF EXISTS Users")
     conn.execute("DROP TABLE IF EXISTS CarouselImages")
+    conn.execute("DROP TABLE IF EXISTS Headshots")
+
+    # Create the Headshots table
+    conn.execute(
+        """CREATE TABLE Headshots
+            (id STRING PRIMARY KEY,
+            url TEXT NOT NULL,
+            musician_id INTEGER NOT NULL);"""
+    )
+
+    headshots = [
+        {
+            "id": "coco_hffqy5",
+            "m_id": 1,
+            "url": "https://res.cloudinary.com/dreftv0ue/image/upload/v1687022283/tgd-headshots/coco_hffqy5.jpg",
+        },
+        {
+            "id": "margarite_ezzcsw",
+            "m_id": 2,
+            "url": "https://res.cloudinary.com/dreftv0ue/image/upload/v1687022284/tgd-headshots/margarite_ezzcsw.jpg",
+        },
+    ]
+    for headshot in headshots:
+        conn.execute(
+            "INSERT INTO Headshots (id, url, musician_id) VALUES (?,?,?)",
+            (headshot.get("id"), headshot.get("url"), headshot.get("m_id")),
+        )
 
     # Create the CarouselImages table
     conn.execute(
@@ -73,27 +100,28 @@ def populate():
     # Create the Musicians table
     conn.execute(
         """CREATE TABLE Musicians
-                (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                bio TEXT NOT NULL,
-                headshot TEXT NOT NULL);"""
+            (id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            bio TEXT NOT NULL,
+            headshot_id STRING,  -- Store the ID of the active headshot
+            FOREIGN KEY (headshot_id) REFERENCES Headshots(id));"""
     )
 
     # Insert some sample data into the Musicians table
     conn.execute(
-        "INSERT INTO Musicians (name, bio, headshot) VALUES (?, ?, ?)",
+        "INSERT INTO Musicians (name, bio, headshot_id) VALUES (?, ?, ?)",
         (
             "Coco Bender",
             "Coco Bender is a pianist residing in the Pacific Northwest. She recently performed with Cascadia Composers, recorded original film scores by Portland composer Christina Rusnak for the Pioneers: First Woman Filmmakers Project, and during the pandemic presented a series of outdoor recitals featuring music by H. Leslie Adams, William Grant Still, Bartok, and others. Coco is a founding member of the Eugene based horn and piano duo, The Grapefruits, as well as a co-artistic director and musical director of an all-women circus, Girl Circus. She has taken master classes with Inna Faliks, Tamara Stefanovich, and Dr. William Chapman Nyaho. Coco currently studies with Dr. Thomas Otten. In addition to performing regularly, she teaches a large studio of students in the Pacific Northwest, from Seattle WA to Eugene OR. Coco was the accompanist for Portland treble choir Aurora Chorus, during their 2021-2022, season under the conductorship of Kathleen Hollingsworth, Margaret Green, Betty Busch, and Joan Szymko.",
-            "https://res.cloudinary.com/dreftv0ue/image/upload/v1687022283/tgd-headshots/coco_hffqy5.jpg",
+            headshots[0].get("id"),
         ),
     )
     conn.execute(
-        "INSERT INTO Musicians (name, bio, headshot) VALUES (?, ?, ?)",
+        "INSERT INTO Musicians (name, bio, headshot_id) VALUES (?, ?, ?)",
         (
             "Margarite Waddell",
             "French hornist Margarite Waddell holds positions with the Eugene Symphony, Sarasota Opera, Boise Philharmonic, Rogue Valley Symphony, and Newport Symphony. As a freelancer, Margarite has played with ensembles throughout the West Coast including the Oregon Symphony, Portland Opera, Santa Rosa Symphony, Marin Symphony, and Symphony San Jose. She has performed with popular artists such as The Who, Josh Groban, and Sarah Brightman. Margarite can be heard on Kamyar Mohajer’s album “Pictures of the Hidden” on Navona Records. She appeared as a soloist with the Silicon Valley Philharmonic in 2016. Margarite cares deeply about music education and has taught private lessons, sectionals, and masterclasses throughout the Bay Area, Southwestern Oregon, Eugene, and Corvallis since 2013. She also performed in the San Francisco Symphony's Adventures in Music program for the 2016-2017 season. Margarite received her bachelor’s degree from the University of Oregon, and her master’s degree from the San Francisco Conservatory of Music.",
-            "https://res.cloudinary.com/dreftv0ue/image/upload/v1687022284/tgd-headshots/margarite_ezzcsw.jpg",
+            headshots[1].get("id"),
         ),
     )
 

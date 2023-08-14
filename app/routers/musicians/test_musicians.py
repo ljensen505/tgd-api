@@ -13,7 +13,7 @@ def test_musicians():
     coco = res.json().get("1")
     margarite = res.json().get("2")
     for m in [coco, margarite]:
-        attrs = "name", "bio", "headshot"
+        attrs = "name", "bio", "headshot_id"
         assert all([attr in m for attr in attrs])
     assert coco.get("name") == "Coco Bender"
     assert margarite.get("name") == "Margarite Waddell"
@@ -24,7 +24,7 @@ def test_musician():
         res = client.get(f"/musicians/{id}")
         assert res.status_code == 200
         assert isinstance(res.json(), dict)
-        for attr in ["name", "bio", "headshot"]:
+        for attr in ["name", "bio", "headshot_id"]:
             assert attr in res.json()
 
 
@@ -49,13 +49,13 @@ def test_updating(jwt_token):
     old_m = res.json()
 
     new_bio = "a new bio"
-    new_headshot = "headshot.jpg"
     payload = {
         "id": 1,
         "name": "does-not-matter",
         "bio": new_bio,
-        "headshot": new_headshot,
+        "headshot_id": old_m.get("headshot_id"),
     }
+
     res = client.put("/musicians", headers=headers, json=payload)
     assert res.status_code == 200
     assert res.json().get("bio") == new_bio
@@ -63,15 +63,18 @@ def test_updating(jwt_token):
     res = client.get(f"/musicians/1")
     assert res.status_code == 200
     assert res.json().get("bio") == new_bio
-    assert res.json().get("headshot") == new_headshot
+    assert res.json().get("headshot_id") == old_m.get("headshot_id")
 
     payload = {
         "id": 1,
         "name": "does-not-matter",
         "bio": old_m.get("bio"),
-        "headshot": old_m.get("headshot"),
+        "headshot_id": old_m.get("headshot_id"),
     }
     res = client.put("/musicians", headers=headers, json=payload)
     assert res.status_code == 200
     assert res.json().get("bio") == old_m.get("bio")
-    assert res.json().get("headshot") == old_m.get("headshot")
+    assert res.json().get("headshot_id") == old_m.get("headshot_id")
+
+
+# TODO: add tests for headshots table

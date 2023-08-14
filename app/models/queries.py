@@ -3,9 +3,13 @@ from app.models.db import DB
 from app.models.models import CarouselImage, Musician
 
 
+def get_headshots_by_musician(musician_id: int) -> list[sqlite3.Row]:
+    return execute_query("SELECT * FROM Headshots WHERE musician_id=?", (musician_id,))
+
+
 def update_musician(m: Musician):
-    query = "UPDATE Musicians SET bio=?, headshot=? WHERE id=?"
-    execute_query(query, (m.bio, m.headshot, m.id), is_update=True)
+    query = "UPDATE Musicians SET bio=?, headshot_id=? WHERE id=?"
+    execute_query(query, (m.bio, m.headshot_id, m.id), is_update=True)
 
 
 def insert_img(img: CarouselImage):

@@ -1,8 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from app.auth.auth import VerifyToken
-from app.models.queries import get_all, get_one, update_musician
-from app.models.models import Musician
+from app.models.queries import (
+    get_all,
+    get_one,
+    update_musician,
+    get_headshots_by_musician,
+)
+from app.models.models import Musician, Headshot
 
 router = APIRouter(tags=["musicians"])
 token_auth_scheme = HTTPBearer()
@@ -26,6 +31,12 @@ async def musician(musician_id: int) -> Musician:
     return Musician(**data)
 
 
+@router.get("/{musician_id}/headshots", response_model=dict[str, Headshot])
+async def headshots(musician_id: int) -> dict[str, Headshot]:
+    m = await musician(musician_id)
+    return {data["id"]: Headshot(**data) for data in get_headshots_by_musician(m.id)}
+
+
 @router.put("/", response_model=Musician)
 async def update(
     new_m: Musician,
@@ -34,13 +45,23 @@ async def update(
     VerifyToken(token.credentials).verify()
 
     # TODO: add headshot router AND verify that newly associated headshot exists
+    headshot_data = await headshots(new_m.id)
+
+    if new_m.headshot_id not in headshot_data:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="That headshot isn't in the database",
+        )
 
     m = await musician(new_m.id)
     try:
         m.bio = new_m.bio
-        m.headshot = new_m.headshot
+        m.headshot_id = new_m.headshot_id
         update_musician(m)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
     return m
+
+
+# TODO: add ability post headshots
