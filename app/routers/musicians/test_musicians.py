@@ -39,8 +39,39 @@ def test_methods():
     res = client.post("/musicians")
     assert res.status_code == 405
 
-    res = client.put("/musicians")
-    assert res.status_code == 405
-
     res = client.delete("/musicians")
     assert res.status_code == 405
+
+
+def test_updating(jwt_token):
+    headers = {"authorization": f"Bearer {jwt_token}"}
+    res = client.get("/musicians/1")
+    old_m = res.json()
+
+    new_bio = "a new bio"
+    new_headshot = "headshot.jpg"
+    payload = {
+        "id": 1,
+        "name": "does-not-matter",
+        "bio": new_bio,
+        "headshot": new_headshot,
+    }
+    res = client.put("/musicians", headers=headers, json=payload)
+    assert res.status_code == 200
+    assert res.json().get("bio") == new_bio
+
+    res = client.get(f"/musicians/1")
+    assert res.status_code == 200
+    assert res.json().get("bio") == new_bio
+    assert res.json().get("headshot") == new_headshot
+
+    payload = {
+        "id": 1,
+        "name": "does-not-matter",
+        "bio": old_m.get("bio"),
+        "headshot": old_m.get("headshot"),
+    }
+    res = client.put("/musicians", headers=headers, json=payload)
+    assert res.status_code == 200
+    assert res.json().get("bio") == old_m.get("bio")
+    assert res.json().get("headshot") == old_m.get("headshot")

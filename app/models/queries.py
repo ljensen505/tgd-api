@@ -1,6 +1,11 @@
 import sqlite3
 from app.models.db import DB
-from app.models.models import CarouselImage
+from app.models.models import CarouselImage, Musician
+
+
+def update_musician(m: Musician):
+    query = "UPDATE Musicians SET bio=?, headshot=? WHERE id=?"
+    execute_query(query, (m.bio, m.headshot, m.id), is_update=True)
 
 
 def insert_img(img: CarouselImage):
