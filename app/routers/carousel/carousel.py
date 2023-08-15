@@ -2,7 +2,7 @@ from typing import BinaryIO
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from app.auth.auth import VerifyToken
-from app.models.queries import get_all, get_one, delete, insert_img
+from app.models.queries import get_all, get_one, delete, insert_carousel_img
 from app.models.models import CarouselImage
 
 import cloudinary
@@ -82,7 +82,7 @@ async def add_image(
 
     try:
         img = CarouselImage(id=img_id, url=url)  # type: ignore
-        insert_img(img)
+        insert_carousel_img(img)
     except Exception as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(err))
 
