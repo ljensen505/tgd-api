@@ -13,6 +13,8 @@ router = APIRouter(tags=["musicians"])
 token_auth_scheme = HTTPBearer()
 table = "Musicians"
 
+# TODO: change route for updating musician
+
 
 @router.get("/", response_model=dict[int, Musician])
 async def musicians() -> dict[int, Musician]:

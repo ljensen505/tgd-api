@@ -75,6 +75,3 @@ def test_updating(jwt_token):
     assert res.status_code == 200
     assert res.json().get("bio") == old_m.get("bio")
     assert res.json().get("headshot_id") == old_m.get("headshot_id")
-
-
-# TODO: add tests for headshots table
