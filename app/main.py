@@ -6,6 +6,7 @@ from app.routers.musicians.musicians import router as musicians_router
 from app.routers.users.users import router as users_router
 from app.routers.events.events import router as events_router
 from app.routers.carousel.carousel import router as carousel_router
+from app.routers.headshots.headshots import router as headshots_router
 from dotenv import load_dotenv
 import os
 from app.auth.auth import VerifyToken
@@ -26,6 +27,7 @@ app.include_router(musicians_router, prefix="/musicians", tags=["musicians"])
 app.include_router(users_router, prefix="/users", tags=["users"])
 app.include_router(events_router, prefix="/events", tags=["events"])
 app.include_router(carousel_router, prefix="/carousel", tags=["carousel"])
+app.include_router(headshots_router, prefix="/headshots", tags=["headshots"])
 
 
 @app.get("/api/private")

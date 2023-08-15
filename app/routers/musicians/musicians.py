@@ -44,7 +44,6 @@ async def update(
 ) -> Musician:
     VerifyToken(token.credentials).verify()
 
-    # TODO: add headshot router AND verify that newly associated headshot exists
     headshot_data = await headshots(new_m.id)
 
     if new_m.headshot_id not in headshot_data:
@@ -62,6 +61,3 @@ async def update(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
     return m
-
-
-# TODO: add ability post headshots

@@ -1,6 +1,6 @@
 import sqlite3
 from app.models.db import DB
-from app.models.models import CarouselImage, Musician
+from app.models.models import CarouselImage, Headshot, Musician
 
 
 def get_headshots_by_musician(musician_id: int) -> list[sqlite3.Row]:
@@ -12,9 +12,15 @@ def update_musician(m: Musician):
     execute_query(query, (m.bio, m.headshot_id, m.id), is_update=True)
 
 
-def insert_img(img: CarouselImage):
+def insert_carousel_img(img: CarouselImage):
     query = "INSERT INTO CarouselImages (id, url) VALUES (?,?)"
     params = (img.id, img.url)
+    execute_query(query, params, is_update=True)
+
+
+def insert_headshot(img: Headshot) -> None:
+    query = "INSERT INTO Headshots (id, url, musician_id) VALUES (?,?,?)"
+    params = (img.id, img.url, img.musician_id)
     execute_query(query, params, is_update=True)
 
 
