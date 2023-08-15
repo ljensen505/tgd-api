@@ -56,7 +56,7 @@ def test_updating(jwt_token):
         "headshot_id": old_m.get("headshot_id"),
     }
 
-    res = client.put("/musicians", headers=headers, json=payload)
+    res = client.put("/musicians/1", headers=headers, json=payload)
     assert res.status_code == 200
     assert res.json().get("bio") == new_bio
 
@@ -71,7 +71,7 @@ def test_updating(jwt_token):
         "bio": old_m.get("bio"),
         "headshot_id": old_m.get("headshot_id"),
     }
-    res = client.put("/musicians", headers=headers, json=payload)
+    res = client.put("/musicians/1", headers=headers, json=payload)
     assert res.status_code == 200
     assert res.json().get("bio") == old_m.get("bio")
     assert res.json().get("headshot_id") == old_m.get("headshot_id")
