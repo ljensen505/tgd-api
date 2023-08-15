@@ -13,8 +13,6 @@ router = APIRouter(tags=["musicians"])
 token_auth_scheme = HTTPBearer()
 table = "Musicians"
 
-# TODO: change route for updating musician
-
 
 @router.get("/", response_model=dict[int, Musician])
 async def musicians() -> dict[int, Musician]:
@@ -39,8 +37,9 @@ async def headshots(musician_id: int) -> dict[str, Headshot]:
     return {data["id"]: Headshot(**data) for data in get_headshots_by_musician(m.id)}
 
 
-@router.put("/", response_model=Musician)
+@router.put("/{musician_id}", response_model=Musician)
 async def update(
+    musician_id: int,
     new_m: Musician,
     token: HTTPAuthorizationCredentials = Depends(token_auth_scheme),
 ) -> Musician:
@@ -54,7 +53,7 @@ async def update(
             detail="That headshot isn't in the database",
         )
 
-    m = await musician(new_m.id)
+    m = await musician(musician_id=musician_id)
     try:
         m.bio = new_m.bio
         m.headshot_id = new_m.headshot_id
