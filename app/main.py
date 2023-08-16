@@ -42,5 +42,5 @@ async def root():
     return {
         "msg": "The Grapefruits Duo API",
         "env": os.getenv("ENV"),
-        "version": "0.0.1",
+        "version": "0.0.2",
     }
