@@ -12,6 +12,7 @@ import os
 from app.auth.auth import VerifyToken
 from app import __version__ as v
 
+
 load_dotenv()
 
 
