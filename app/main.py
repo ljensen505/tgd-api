@@ -10,7 +10,7 @@ from app.routers.headshots.headshots import router as headshots_router
 from dotenv import load_dotenv
 import os
 from app.auth.auth import VerifyToken
-from app import __version__
+from app import __version__ as v
 
 load_dotenv()
 
@@ -43,5 +43,5 @@ async def root():
     return {
         "msg": "The Grapefruits Duo API",
         "env": os.getenv("ENV"),
-        "version": f"v{__version__}",
+        "version": f"v{v.__version__}",
     }
