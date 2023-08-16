@@ -53,3 +53,11 @@ Or, if you desire stdout to be shown:
 ```bash
 pytest -rP
 ```
+
+## Changes
+
+After making changes on your branch, commit those changes and then run
+```bash
+bump2version patch
+```
+This can alternatively be done with `minor` or `major` as needed
