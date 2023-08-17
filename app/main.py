@@ -1,28 +1,25 @@
 from fastapi import FastAPI, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.testclient import TestClient
+
 from app.routers.group.group import router as group_router
 from app.routers.musicians.musicians import router as musicians_router
 from app.routers.users.users import router as users_router
 from app.routers.events.events import router as events_router
 from app.routers.carousel.carousel import router as carousel_router
 from app.routers.headshots.headshots import router as headshots_router
-from dotenv import load_dotenv
-import os
 from app.auth.auth import VerifyToken
-from app import __version__ as v
+from app.__version__ import __version__
+
+from dotenv import load_dotenv
+from os import getenv
 
 
 load_dotenv()
 
 
 token_auth_scheme = HTTPBearer()
-
-if os.getenv("ENV") == "prod":
-    app = FastAPI(docs_url=None, redoc_url=None)
-else:
-    app = FastAPI()
-client = TestClient(app)  # for making internal requests
+app = FastAPI()
 
 app.include_router(group_router, prefix="/group", tags=["group"])
 app.include_router(musicians_router, prefix="/musicians", tags=["musicians"])
@@ -43,6 +40,6 @@ async def private(token: HTTPAuthorizationCredentials = Depends(token_auth_schem
 async def root():
     return {
         "msg": "The Grapefruits Duo API",
-        "env": os.getenv("ENV"),
-        "version": f"v{v.__version__}",
+        "env": getenv("ENV"),
+        "version": f"v{__version__}",
     }

@@ -169,7 +169,7 @@ def populate():
             "description": "Limited seating available and the start time is approximate. Please contact us directly to reserve a seat.",
             "image_url": "Fairhill County and the Music Collaborative of Salguerro.png",
             "location": "Medford, Oregon",
-            "ticket_url": "",
+            "ticket_url": None,
         },
         {
             "name": "Classical On Broadway Series",
