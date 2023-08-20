@@ -21,7 +21,7 @@ load_dotenv()
 token_auth_scheme = HTTPBearer()
 app = FastAPI()
 
-origins = ["http://127.0.0.1:5173"]
+origins = ["http://127.0.0.1:5173", "http://localhost", "http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,
